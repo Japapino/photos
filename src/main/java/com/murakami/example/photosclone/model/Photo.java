@@ -2,15 +2,17 @@
 package com.murakami.example.photosclone.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.validation.constraints.NotEmpty;
 
+@Table("PHOTOS")
 public class Photo {
 
     @Id
-    private String id;
+    private Integer id;
 
     @NotEmpty
     private String fileName;
@@ -22,12 +24,13 @@ public class Photo {
 
     public Photo() {
     }
-
-    public Photo (String id, String fileName) {
-        this.id = id;
-        this.fileName = fileName;
+    public byte[] getData() {
+        return data;
     }
 
+    public void setData(byte[] data) {
+        this.data = data;
+    }
 
     public String getContentType() {
         return contentType;
@@ -37,11 +40,11 @@ public class Photo {
         this.contentType = contentType;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -52,16 +55,4 @@ public class Photo {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
-    }
-
-
-
-
 }

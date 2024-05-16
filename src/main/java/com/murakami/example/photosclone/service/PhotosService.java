@@ -1,45 +1,38 @@
 package com.murakami.example.photosclone.service;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.murakami.example.photosclone.model.Photo;
+import com.murakami.example.photosclone.repository.PhotosRepository;
 
-// @Component <- Both @Component and @Service are valid annotations for this class
 @Service
 public class PhotosService {
 
+    private final PhotosRepository photosRepository;
 
-    private Map<String, Photo> db = new HashMap<>() {{
-        put("1", new Photo("1", "hello.jpg"));
-    }};
-
-    public Collection<Photo> getAll() {
-        return db.values();
-    }
-    
-    public Photo get(String id) {
-        return db.get(id);
+    public PhotosService(@Autowired PhotosRepository photosRepository) {
+        this.photosRepository = photosRepository;
     }
 
+    public Iterable<Photo> getAll() {
+        return photosRepository.findAll();
+    }
 
-	public void remove(String id) {
-        db.remove(id);
-	}
+    public Photo get(Integer id) {
+        return photosRepository.findById(id).orElse(null);
+    }
 
-	public Photo save(String fileName, String contentType, byte[] data) {
+    public void remove(Integer id) {
+        photosRepository.deleteById(id);
+    }
+
+    public Photo save(String fileName, String contentType, byte[] data) {
         Photo photo = new Photo();
-        photo.setId(UUID.randomUUID().toString());
+        photo.setContentType(contentType);
         photo.setFileName(fileName);
         photo.setData(data);
-        photo.setContentType(contentType);
-        
-        db.put(photo.getId(), photo);
-
+        photosRepository.save(photo);
         return photo;
-	}
+    }
 
 }

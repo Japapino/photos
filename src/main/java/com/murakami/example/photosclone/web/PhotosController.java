@@ -15,8 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 import com.murakami.example.photosclone.model.Photo;
 import com.murakami.example.photosclone.service.PhotosService;
 
-import java.util.Collection;
-
 @RestController
 public class PhotosController {
 
@@ -25,19 +23,19 @@ public class PhotosController {
     public PhotosController(@Autowired PhotosService photosService) {
         this.photosService = photosService;
     };
-
+    
     @GetMapping("/")
     public String hello() {
         return "Hello, World!";
     }
 
     @GetMapping("/photos")
-    public Collection<Photo> get() {
+    public Iterable<Photo> get() {
         return photosService.getAll();
     }
 
     @GetMapping("/photos/{id}")
-    public Photo get(@PathVariable("id") String id) {
+    public Photo get(@PathVariable("id") Integer id) {
         Photo photo = photosService.get(id);
 
         if (photo == null) {
@@ -48,7 +46,7 @@ public class PhotosController {
     }
 
     @DeleteMapping("/photos/{id}") 
-    public void delete(@PathVariable("id") String id) {
+    public void delete(@PathVariable("id") Integer id) {
         Photo photo = photosService.get(id);
         if (photo == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
